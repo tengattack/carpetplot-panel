@@ -152,7 +152,7 @@ System.register(['d3', '../libs/d3-scale-chromatic/index', 'lodash', 'app/core/c
     function getYAxisWidth() {
       var axisText = carpet.selectAll('.axis-y text').nodes();
       return d3.max(axisText, function (text) {
-        return $(text).outerWidth();
+        return $(text).outerWidth() || text.getBoundingClientRect().width;
       });
     }
 

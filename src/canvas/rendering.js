@@ -150,7 +150,7 @@ export default function link(scope, elem, attrs, ctrl) {
 
   function getYAxisWidth() {
     const axisText = carpet.selectAll('.axis-y text').nodes();
-    return d3.max(axisText, (text) => $(text).outerWidth());
+    return d3.max(axisText, (text) => $(text).outerWidth() || text.getBoundingClientRect().width);
   }
 
   function addXAxis() {
