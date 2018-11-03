@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['d3', 'lodash', 'app/core/core', 'app/core/utils/ticks', 'moment', 'jquery', '../fragments', './tooltip'], function (_export, _context) {
+System.register(['d3', '../libs/d3-scale-chromatic/index', 'lodash', 'app/core/core', 'app/core/utils/ticks', 'moment', 'jquery', '../fragments', './tooltip'], function (_export, _context) {
   "use strict";
 
-  var d3, _, appEvents, contextSrv, tickStep, moment, $, getFragment, CarpetplotTooltip, _slicedToArray, Y_AXIS_TICK_PADDING, MIN_SELECTION_WIDTH, STROKE_STYLE;
+  var d3, d3ScaleChromatic, _, appEvents, contextSrv, tickStep, moment, $, getFragment, CarpetplotTooltip, _slicedToArray, Y_AXIS_TICK_PADDING, MIN_SELECTION_WIDTH, STROKE_STYLE;
 
   function link(scope, elem, attrs, ctrl) {
     var data = void 0,
@@ -264,7 +264,7 @@ System.register(['d3', 'lodash', 'app/core/core', 'app/core/utils/ticks', 'momen
 
     function getColorScale(min, max) {
       var colorScheme = _.find(ctrl.colorSchemes, { value: panel.color.colorScheme });
-      var colorInterpolator = d3[colorScheme.value];
+      var colorInterpolator = d3ScaleChromatic[colorScheme.value];
       var colorScaleInverted = colorScheme.invert === 'always' || colorScheme.invert === 'dark' && !contextSrv.user.lightTheme;
       colorScaleInverted = panel.color.invert ? !colorScaleInverted : colorScaleInverted;
 
@@ -617,6 +617,8 @@ System.register(['d3', 'lodash', 'app/core/core', 'app/core/utils/ticks', 'momen
   return {
     setters: [function (_d2) {
       d3 = _d2.default;
+    }, function (_libsD3ScaleChromaticIndex) {
+      d3ScaleChromatic = _libsD3ScaleChromaticIndex;
     }, function (_lodash) {
       _ = _lodash.default;
     }, function (_appCoreCore) {

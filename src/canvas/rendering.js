@@ -1,4 +1,5 @@
 import d3 from 'd3';
+import * as d3ScaleChromatic from '../libs/d3-scale-chromatic/index';
 import _ from 'lodash';
 import { appEvents, contextSrv } from 'app/core/core';
 import { tickStep } from 'app/core/utils/ticks';
@@ -281,7 +282,7 @@ export default function link(scope, elem, attrs, ctrl) {
 
   function getColorScale(min, max) {
     const colorScheme = _.find(ctrl.colorSchemes, { value: panel.color.colorScheme });
-    const colorInterpolator = d3[colorScheme.value];
+    const colorInterpolator = d3ScaleChromatic[colorScheme.value];
     let colorScaleInverted = colorScheme.invert === 'always' || (colorScheme.invert === 'dark' && !contextSrv.user.lightTheme);
     colorScaleInverted = panel.color.invert ? !colorScaleInverted : colorScaleInverted;
 
