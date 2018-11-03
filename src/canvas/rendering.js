@@ -154,10 +154,10 @@ export default function link(scope, elem, attrs, ctrl) {
   }
 
   function addXAxis() {
-    xFrom = moment.utc(data.data[0].timestamp).startOf('day');
-    xTo = moment.utc(data.data[data.data.length - 1].timestamp).startOf('day').add(1, 'day');
+    xFrom = moment.utc(data.data[0].timestamp);
+    xTo = moment.utc(data.data[data.data.length - 1].timestamp);
 
-    xScale = d3.scaleUtc()
+    xScale = d3.scaleTime()
       .domain([xFrom, xTo])
       .range([0, chartWidth]);
 
@@ -574,7 +574,7 @@ export default function link(scope, elem, attrs, ctrl) {
 
     const bucketTimestamp = fragment.getBucketTimestamp(moment(xScale.invert(x)).valueOf());
     const xTime = moment.utc(bucketTimestamp);
-    const index = fragment.getBucketIndex(xTime, xFrom);
+    const index = fragment.getBucketIndex(xTime, xFrom, data.data);
 
     const target = invertedYScale(y);
     const bucketIndex = _.indexOf(targets, target);

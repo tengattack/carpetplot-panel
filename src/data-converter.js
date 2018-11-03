@@ -7,16 +7,9 @@ const createConverter = (aggregateType, fragmentType) => {
 
   const prepareData = (from, to, fragment) => {
     const data = {};
-    const fromUtc = moment.utc(from).startOf('day');
-    const toUtc = moment.utc(to).startOf('day').add(1, 'day');
+    const fromUtc = moment.utc(from);
+    const toUtc = moment.utc(to);
     // timeUtc = timeUtc.add(1, 'day')
-    for (let timeUtc = moment.utc(fromUtc); timeUtc.isBefore(toUtc); timeUtc = fragment.nextTime(timeUtc)) {
-      data[timeUtc.valueOf()] = {
-        // time: timeUtc.clone(),
-        timestamp: timeUtc.valueOf(),
-        values: {}
-      };
-    }
     return {
       data,
       from: fromUtc,
@@ -34,7 +27,12 @@ const createConverter = (aggregateType, fragmentType) => {
         .filter(([value]) => value !== null)
         .forEach(([value, timestamp]) => {
           const bucketTimestamp = fragment.getBucketTimestamp(timestamp);
-          if (!(bucketTimestamp in container.data)) { return; }
+          if (!(bucketTimestamp in container.data)) {
+            container.data[bucketTimestamp] = {
+              timestamp: bucketTimestamp,
+              values: {},
+            };
+          }
           if (!(target in container.data[bucketTimestamp].values)) {
             container.data[bucketTimestamp].values[target] = [];
           }

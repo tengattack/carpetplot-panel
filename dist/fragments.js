@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['moment'], function (_export, _context) {
+System.register(['moment', 'lodash'], function (_export, _context) {
   "use strict";
 
-  var moment, _fragments, TWENTYFOUR, TWELVE, SIX, fragments, fragmentsMap, getFragment;
+  var moment, _, _fragments, DEFAULT, TWENTYFOUR, TWELVE, SIX, fragments, fragmentsMap, getFragment;
 
   function _defineProperty(obj, key, value) {
     if (key in obj) {
@@ -23,12 +23,25 @@ System.register(['moment'], function (_export, _context) {
   return {
     setters: [function (_moment) {
       moment = _moment.default;
+    }, function (_lodash) {
+      _ = _lodash.default;
     }],
     execute: function () {
+      DEFAULT = 'DEFAULT';
       TWENTYFOUR = 'TWENTYFOUR';
       TWELVE = 'TWELVE';
       SIX = 'SIX';
-      fragments = (_fragments = {}, _defineProperty(_fragments, TWENTYFOUR, {
+      fragments = (_fragments = {}, _defineProperty(_fragments, DEFAULT, {
+        getBucketIndex: function getBucketIndex(time, from, data) {
+          return _.findLastIndex(data, function (d) {
+            return d.timestamp < time;
+          });
+        },
+        getBucketTimestamp: function getBucketTimestamp(timestamp) {
+          return timestamp;
+        }
+        // nextTime: (time) => moment.utc(time).add(1, 'minute')
+      }), _defineProperty(_fragments, TWENTYFOUR, {
         // getBucketIndex: (time) => time.hour() * 60 + time.minute(),
         // getTime: (time, bucketIndex) => moment(time).startOf('day').add(bucketIndex, 'minute'),
         getBucketIndex: function getBucketIndex(time, from) {
@@ -70,7 +83,7 @@ System.register(['moment'], function (_export, _context) {
         }
       }), _fragments);
 
-      _export('fragmentsMap', fragmentsMap = [{ name: 'Day', value: TWENTYFOUR }, { name: '12 hours', value: TWELVE }, { name: '6 hours', value: SIX }]);
+      _export('fragmentsMap', fragmentsMap = [{ name: 'Default', value: DEFAULT }, { name: 'Day', value: TWENTYFOUR }, { name: '12 hours', value: TWELVE }, { name: '6 hours', value: SIX }]);
 
       _export('fragmentsMap', fragmentsMap);
 
@@ -81,6 +94,7 @@ System.register(['moment'], function (_export, _context) {
       _export('getFragment', getFragment);
 
       _export('default', {
+        DEFAULT: DEFAULT,
         TWENTYFOUR: TWENTYFOUR,
         TWELVE: TWELVE,
         SIX: SIX

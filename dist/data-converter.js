@@ -70,16 +70,9 @@ System.register(['moment', './aggregates', './fragments'], function (_export, _c
 
         var prepareData = function prepareData(from, to, fragment) {
           var data = {};
-          var fromUtc = moment.utc(from).startOf('day');
-          var toUtc = moment.utc(to).startOf('day').add(1, 'day');
+          var fromUtc = moment.utc(from);
+          var toUtc = moment.utc(to);
           // timeUtc = timeUtc.add(1, 'day')
-          for (var timeUtc = moment.utc(fromUtc); timeUtc.isBefore(toUtc); timeUtc = fragment.nextTime(timeUtc)) {
-            data[timeUtc.valueOf()] = {
-              // time: timeUtc.clone(),
-              timestamp: timeUtc.valueOf(),
-              values: {}
-            };
-          }
           return {
             data: data,
             from: fromUtc,
@@ -108,7 +101,10 @@ System.register(['moment', './aggregates', './fragments'], function (_export, _c
 
               var bucketTimestamp = fragment.getBucketTimestamp(timestamp);
               if (!(bucketTimestamp in container.data)) {
-                return;
+                container.data[bucketTimestamp] = {
+                  timestamp: bucketTimestamp,
+                  values: {}
+                };
               }
               if (!(target in container.data[bucketTimestamp].values)) {
                 container.data[bucketTimestamp].values[target] = [];

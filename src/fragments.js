@@ -1,10 +1,19 @@
 import moment from 'moment';
+import _ from 'lodash';
 
+const DEFAULT = 'DEFAULT';
 const TWENTYFOUR = 'TWENTYFOUR';
 const TWELVE = 'TWELVE';
 const SIX = 'SIX';
 
 const fragments = {
+  [DEFAULT]: {
+    getBucketIndex: (time, from, data) => {
+      return _.findLastIndex(data, (d) => d.timestamp < time);
+    },
+    getBucketTimestamp: (timestamp) => timestamp,
+    // nextTime: (time) => moment.utc(time).add(1, 'minute')
+  },
   [TWENTYFOUR]: {
     // getBucketIndex: (time) => time.hour() * 60 + time.minute(),
     // getTime: (time, bucketIndex) => moment(time).startOf('day').add(bucketIndex, 'minute'),
@@ -33,19 +42,21 @@ const fragments = {
       return timeUtc.startOf('day').add(hours, 'hour').valueOf();
     },
     nextTime: (time) => moment.utc(time).add(6, 'hour')
-  }
+  },
 };
 
 export const fragmentsMap = [
-  { name: 'Day', value: TWENTYFOUR},
+  { name: 'Default', value: DEFAULT },
+  { name: 'Day', value: TWENTYFOUR },
   { name: '12 hours', value: TWELVE },
-  { name: '6 hours', value: SIX}
+  { name: '6 hours', value: SIX },
 ];
 
 export const getFragment = (fragmentType) => fragments[fragmentType];
 
 export default {
+  DEFAULT,
   TWENTYFOUR,
   TWELVE,
-  SIX
+  SIX,
 };
