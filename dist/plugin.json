@@ -9,8 +9,8 @@
       "name": "eastcirclek"
     },
     "keywords": ["carpet", "plot", "panel"],
-    "version": "0.0.2",
-    "updated": "2018-11-04",
+    "version": "0.0.3",
+    "updated": "2020-07-04",
     "logos": {
       "small": "src/img/logo.svg",
       "large": "src/img/logo.svg"
