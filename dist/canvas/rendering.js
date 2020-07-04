@@ -334,6 +334,8 @@ System.register(['d3', '../libs/d3-scale-chromatic/index', 'lodash', 'app/core/c
     function onMouseLeave() {
       appEvents.emit('graph-hover-clear');
       clearCrosshair();
+      resetPointHighLight();
+      tooltip.destroy();
     }
 
     function onMouseMove(event) {
@@ -563,7 +565,7 @@ System.register(['d3', '../libs/d3-scale-chromatic/index', 'lodash', 'app/core/c
       var bucketX = xScale(xTime.toDate());
       var bucketY = pointHeight * bucketIndex;
 
-      return _.has(data, 'data[' + index + '].buckets[' + target + ']') ? {
+      var bucket = _.has(data, 'data[' + index + '].buckets[' + target + ']') ? {
         x: bucketX,
         y: bucketY,
         target: target,
@@ -576,6 +578,11 @@ System.register(['d3', '../libs/d3-scale-chromatic/index', 'lodash', 'app/core/c
           return bucket && bucket.x === this.x && bucket.y === this.y;
         }
       } : null;
+      if (bucket) {
+        // Fix for default fragment (auto interval)
+        bucket.x = xScale(moment.utc(bucket.timestamp));
+      }
+      return bucket;
     }
 
     function hasData() {

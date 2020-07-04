@@ -350,6 +350,8 @@ export default function link(scope, elem, attrs, ctrl) {
   function onMouseLeave() {
     appEvents.emit('graph-hover-clear');
     clearCrosshair();
+    resetPointHighLight();
+    tooltip.destroy();
   }
 
   function onMouseMove(event) {
@@ -582,7 +584,7 @@ export default function link(scope, elem, attrs, ctrl) {
     const bucketX = xScale(xTime.toDate());
     const bucketY = pointHeight * bucketIndex;
 
-    return _.has(data, `data[${index}].buckets[${target}]`)
+    const bucket = _.has(data, `data[${index}].buckets[${target}]`)
       ? {
         x: bucketX,
         y: bucketY,
@@ -597,6 +599,11 @@ export default function link(scope, elem, attrs, ctrl) {
         }
       }
       : null;
+    if (bucket) {
+      // Fix for default fragment (auto interval)
+      bucket.x = xScale(moment.utc(bucket.timestamp));
+    }
+    return bucket;
   }
 
   function hasData() {
