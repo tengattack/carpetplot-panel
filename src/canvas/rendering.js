@@ -252,7 +252,10 @@ export default function link(scope, elem, attrs, ctrl) {
       .attr('class', 'carpet-point')
       .attr('fillStyle', ({ value }) => value === null ? panel.color.nullColor : colorScale(value))
       .attr('x', (d) => xScale(moment.utc(d.timestamp)))
-      .attr('y', (d, i) => pointScale(i));
+      .attr('y', ({ target }) => {
+        const i = _.indexOf(data.targets, target)
+        return pointScale(i)
+      });
 
     drawPoints(cols);
   }

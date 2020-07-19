@@ -233,7 +233,10 @@ System.register(['d3', '../libs/d3-scale-chromatic/index', 'lodash', 'app/core/c
         return value === null ? panel.color.nullColor : colorScale(value);
       }).attr('x', function (d) {
         return xScale(moment.utc(d.timestamp));
-      }).attr('y', function (d, i) {
+      }).attr('y', function (_ref2) {
+        var target = _ref2.target;
+
+        var i = _.indexOf(data.targets, target);
         return pointScale(i);
       });
 
